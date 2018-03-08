@@ -6,7 +6,6 @@ branches:
     - master
 
 init:
-  - ps: $env:Path = "$env:Path;%USERPROFILE%\.dotnet\tools"
 
 skip_tags: true
 
@@ -28,6 +27,7 @@ install:
   - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
   - ps: .\dotnet-install.ps1 -InstallDir ./dotnet-pre -Version 2.1.300-preview1-008174 -NoPath
   - ps: ./dotnet-pre/dotnet.exe install tool dotnet-certes --version 1.0.0-master-776 --source https://www.myget.org/F/certes/api/v3/index.json -g
+  - ps: new-alias certes %USERPROFILE%\.dotnet\tools\certes.exe
 
 nuget:
   disable_publish_on_pr: true
