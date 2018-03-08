@@ -33,7 +33,8 @@ nuget:
   disable_publish_on_pr: true
 
 build_script:
-  - ps: certes order new *.lo0.in --server $env:SRV
+  # new wildcard order
+  - ps: certes order new *.lo0.in --server $env:ACME_DIR
 
 artifacts:
   - path: '**\*.pfx'
