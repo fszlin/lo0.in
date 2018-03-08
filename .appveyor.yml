@@ -33,8 +33,12 @@ nuget:
   disable_publish_on_pr: true
 
 build_script:
-  # new wildcard order
-  - ps: certes order new *.lo0.in --server $env:ACME_DIR
+  # create wildcard order
+  - ps: $order = certes order new *.lo0.in --server $env:ACME_DIR | ConvertFrom-Json
+  # deploy DNS response to Azure
+  - ps: certes az dns $order.location *.lo0.in
+
+test: off
 
 artifacts:
   - path: '**\*.pfx'
