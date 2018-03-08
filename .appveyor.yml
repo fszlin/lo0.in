@@ -6,6 +6,7 @@ branches:
     - master
 
 init:
+  - ps: $env:Path = "$env:Path;%USERPROFILE%\.dotnet\tools"
 
 skip_tags: true
 
