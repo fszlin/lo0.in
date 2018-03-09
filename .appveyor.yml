@@ -45,11 +45,13 @@ build_script:
   - ps: $order = certes order new *.lo0.in --server $env:ACME_DIR | ConvertFrom-Json
   - ps: echo $order.location
   # deploy DNS response to Azure
-  - ps: certes az dns $order.location *.lo0.in --resource-group certes
+  - ps: certes az dns $order.location *.lo0.in --resource-group certes | Out-Null
   # validate DNS response
-  - ps: certes order validate $order.location *.lo0.in dns --server $env:ACME_DIR
+  - ps: certes order validate $order.location *.lo0.in dns --server $env:ACME_DIR | Out-Null
+  - ps: certes order finalize $order.location --dn "CN=*.lo0.in" --out ./key.pem --server $env:ACME_DIR | Out-Null
   - ps: $env:CERTES_DEBUG = "true"
-  - ps: certes order finalize $order.location --dn "CN=*.lo0.in" --out ./key.pem --server $env:ACME_DIR
+  - ps: certes cert pem $order.location --out cert.pem --server $env:ACME_DIR
+  - ps: certes cert pfx $order.location certes --private-key ./key.pem --out cert.pfx --server $env:ACME_DIR
 
 test: off
 
