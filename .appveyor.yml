@@ -47,8 +47,8 @@ build_script:
   # deploy DNS response to Azure
   - ps: certes az dns $order.location *.lo0.in --resource-group certes
   # validate DNS response
-  - ps: $env:CERTES_DEBUG = "true"
-  - ps: certes order validate $order.location *.lo0.in dns
+  - ps: certes order validate $order.location *.lo0.in dns --server $env:ACME_DIR
+  #- ps: $env:CERTES_DEBUG = "true"
 
 test: off
 
