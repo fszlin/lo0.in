@@ -48,7 +48,8 @@ build_script:
   - ps: certes az dns $order.location *.lo0.in --resource-group certes
   # validate DNS response
   - ps: certes order validate $order.location *.lo0.in dns --server $env:ACME_DIR
-  #- ps: $env:CERTES_DEBUG = "true"
+  - ps: $env:CERTES_DEBUG = "true"
+  - ps: certes order finalize $location --dn "CN=*.lo0.in" --out ./key.pem
 
 test: off
 
