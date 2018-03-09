@@ -27,6 +27,7 @@ environment:
     secure: icfPnryDWgqU1TmP3J7gsidrpY9jGAuWY4gXf6CeDkVOELNN25JaeMvaRztUqtlb
   CERTES_AZURE_CLIENT_SECRET:
     secure: igTLkiccsMP8ctXsHH6ymG8CKv6dXbi0HUqjcqyjfAZcgJp5NtDWH/7Ch0FVw9gt
+  CERTES_DEBUG: true
 
 cache:
   - dotnet-pre
