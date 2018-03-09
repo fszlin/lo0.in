@@ -44,7 +44,7 @@ build_script:
   # create wildcard order
   - ps: $order = certes order new *.lo0.in --server $env:ACME_DIR | ConvertFrom-Json
   # deploy DNS response to Azure
-  - ps: certes az dns $order.location *.lo0.in
+  - ps: certes az dns $order.location *.lo0.in --resource-group certes
 
 test: off
 
