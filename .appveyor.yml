@@ -19,7 +19,15 @@ environment:
   ACME_DIR: https://acme-staging-v02.api.letsencrypt.org/directory
   CERTES_ACME_ACCOUNT_KEY:
     secure: fmkn8cbE+A1dHITS3s7NADqKi+2rYNKSSjuuLWvkX1/9hLRkhO9VZMOsE0kVgvXUJUPt6Q604QxQwQ7w6jxvW6W7q0SRUcsnFjp7b6UfN5zmBZXcUnxBPbU1rbXUuVO7RX5G6j9H6WRQNeiYVtsfbw==
-    
+  CERTES_AZURE_SUBSCRIPTION_ID:
+    secure: FSK01SfyZI0x6AX2XVDxcE6kUAmg4fYja2hsNcQNBxa1PBddSZtZ8rthvO5c8o/R
+  CERTES_AZURE_TALENT_ID:
+    secure: 4FrR9+ARA8H+bLFFQDT4C1TAZv/LTO69vFpfjpqR5BVTedqgsZcey6xuS2TDA46l
+  CERTES_AZURE_CLIENT_ID:
+    secure: icfPnryDWgqU1TmP3J7gsidrpY9jGAuWY4gXf6CeDkVOELNN25JaeMvaRztUqtlb
+  CERTES_AZURE_CLIENT_SECRET:
+    secure: igTLkiccsMP8ctXsHH6ymG8CKv6dXbi0HUqjcqyjfAZcgJp5NtDWH/7Ch0FVw9gt
+
 cache:
   - dotnet-pre
 
