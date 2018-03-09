@@ -51,8 +51,8 @@ build_script:
   # submit CSR
   - ps: certes order finalize $order.location --dn "CN=*.lo0.in" --out ./key.pem --server $env:ACME_DIR | Out-Null
   # export certificate
-  - ps: certes cert pem $order.location --out cert.pem --server $env:ACME_DIR
-  - ps: certes cert pfx $order.location certes --private-key ./key.pem --out cert.pfx --server $env:ACME_DIR
+  - ps: certes cert pem $order.location --out cert.pem --server $env:ACME_DIR | Out-Null
+  - ps: certes cert pfx $order.location certes --private-key ./key.pem --out cert.pfx --server $env:ACME_DIR | Out-Null
 
 test: off
 
