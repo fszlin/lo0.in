@@ -60,7 +60,10 @@ test: off
 
 artifacts:
   - path: '**\*.pfx'
+    name: pfx
+
   - path: '**\*.pem'
+    name: cert
 
 deploy:
   - provider: GitHub
@@ -68,7 +71,7 @@ deploy:
     description: 'PFX password: certes'
     auth_token:
       secure: B+lTI7i/tnZeg1ZSmho3HvOWjs0C4hptNy5cvWgF0Nn7b6v8nwT/mxEWVCfIJ7Fy
-    artifact: '**\*.pfx','**\*.pem'
+    artifact: pfx,cert
     draft: true
     prerelease: false
     on:
