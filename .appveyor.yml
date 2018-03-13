@@ -38,7 +38,7 @@ install:
   - ps: new-alias certes "$env:USERPROFILE\.dotnet\tools\certes.exe"
 
 nuget:
-  disable_publish_on_pr: true
+  disable_publish_on_pr: false
 
 build_script:
   # create wildcard order
@@ -61,3 +61,15 @@ test: off
 artifacts:
   - path: '**\*.pfx'
   - path: '**\*.pem'
+
+deploy:
+  - provider: GitHub
+    release: v$(APPVEYOR_BUILD_VERSION)
+    description: 'PFX password: certes'
+    auth_token:
+      secure: B+lTI7i/tnZeg1ZSmho3HvOWjs0C4hptNy5cvWgF0Nn7b6v8nwT/mxEWVCfIJ7Fy
+    artifact: '**\*.pfx','**\*.pem'
+    draft: true
+    prerelease: false
+    on:
+      branch: master
