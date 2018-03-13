@@ -50,6 +50,8 @@ build_script:
   - ps: certes order validate $order.location *.lo0.in dns | Out-Null
   # submit CSR
   - ps: certes order finalize $order.location --dn "CN=*.lo0.in" --out ./key.pem | Out-Null
+  # install SSL binding for Azure web app
+  - ps: certes az app $order.location www.lo0.in certes --slot ci --resource-group certes --private-key ./key.pem
   # export certificate
   - ps: certes cert pem $order.location --out cert.pem | Out-Null
   - ps: certes cert pfx $order.location certes --private-key ./key.pem --out cert.pfx | Out-Null
