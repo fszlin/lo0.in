@@ -19,5 +19,5 @@ Use these instead :wink:
 You may also enable HTTPS using the certificates 
 from [releases](https://github.com/fszlin/lo0.in/releases).
 
-The certificates are valid for three months form the date
+The certificates are valid for three months from the date
 it created, and new certificates will be published on a weekly basis.
