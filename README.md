@@ -1,4 +1,4 @@
-﻿# lo0.in
+# lo0.in
 
 _lo0.in_ is a hostname resloves to 127.0.0.1.
 
@@ -13,3 +13,11 @@ Use these instead :wink:
 - http://www.lo0.in
 - http://api.lo0.in
 - http://any.name.you.can.remember.lo0.in
+
+## HTTPS
+
+You may also enable HTTPS using the certificates 
+from [releases](https://github.com/fszlin/lo0.in/releases).
+
+The certificates are valid for three months form the date
+it created, and new certificates will be published on a weekly basis.
