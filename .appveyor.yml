@@ -32,9 +32,9 @@ cache:
 
 install:
   - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
-  - ps: .\dotnet-install.ps1 -InstallDir ./dotnet-pre -Version 2.1.300-preview2-008530 -NoPath
+  - ps: .\dotnet-install.ps1 -Version 2.1.300-preview2-008530
   - ps: ./dotnet-pre/dotnet.exe tool install dotnet-certes -g --version 1.0.1-preview-871
-  - ps: $env:Path += ";C:\Users\appveyor\.dotnet\tools"
+  - ps: $env:Path += ";$($env:USERPROFILE)\.dotnet\tools\"
 
 nuget:
   disable_publish_on_pr: true
