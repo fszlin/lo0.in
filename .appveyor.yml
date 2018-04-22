@@ -20,7 +20,7 @@ environment:
     secure: fmkn8cbE+A1dHITS3s7NADqKi+2rYNKSSjuuLWvkX199WThoEptlCXKAwxlMhWZtBrXdNU5D+1RHI2ouDwWF7hwcIHcGf30v2UohFR+YHujT/N6c4EnK3261CNNm6AklbINPJ72+QPu04/NqEzDAtA==
   CERTES_AZURE_SUBSCRIPTION_ID:
     secure: FSK01SfyZI0x6AX2XVDxcE6kUAmg4fYja2hsNcQNBxa1PBddSZtZ8rthvO5c8o/R
-  CERTES_AZURE_TALENT_ID:
+  CERTES_AZURE_TENANT_ID:
     secure: 4FrR9+ARA8H+bLFFQDT4C1TAZv/LTO69vFpfjpqR5BVTedqgsZcey6xuS2TDA46l
   CERTES_AZURE_CLIENT_ID:
     secure: icfPnryDWgqU1TmP3J7gsidrpY9jGAuWY4gXf6CeDkVOELNN25JaeMvaRztUqtlb
@@ -32,8 +32,8 @@ cache:
 
 install:
   - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
-  - ps: .\dotnet-install.ps1 -Version 2.1.300-preview1-008174 -InstallDir ./dotnet-pre -NoPath
-  - ps: ./dotnet-pre/dotnet.exe install tool dotnet-certes -g --version 1.0.1-preview-829
+  - ps: .\dotnet-install.ps1 -InstallDir ./dotnet-pre -Version 2.1.300-preview2-008530 -NoPath
+  - ps: ./dotnet-pre/dotnet.exe install tool dotnet-certes -g --version 1.0.1-preview-871
   - ps: new-alias certes "$env:USERPROFILE\.dotnet\tools\certes.exe"
 
 nuget:
