@@ -27,10 +27,14 @@ environment:
   CERTES_AZURE_CLIENT_SECRET:
     secure: igTLkiccsMP8ctXsHH6ymG8CKv6dXbi0HUqjcqyjfAZcgJp5NtDWH/7Ch0FVw9gt
 
+cache:
+  - dotnet-pre
+
 install:
   - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
-  - ps: .\dotnet-install.ps1 -Version 2.1.300-preview2-008530
+  - ps: .\dotnet-install.ps1 -InstallDir ./dotnet-pre -Version 2.1.300-preview2-008530 -NoPath
   - ps: dotnet tool install dotnet-certes -g --version 1.0.1-preview-871
+  - ps: $env:DOTNET_ROOT = "$($env:APPVEYOR_BUILD_FOLDER)\dotnet-pre"
   - ps: $env:Path += ";$($env:USERPROFILE)\.dotnet\tools\"
 
 nuget:
