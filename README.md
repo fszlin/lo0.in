@@ -21,3 +21,5 @@ from [releases](https://github.com/fszlin/lo0.in/releases).
 
 The certificates are valid for three months from the date
 it created, and new certificates will be published on a weekly basis.
+
+[![AppVeyor](https://img.shields.io/appveyor/ci/fszlin/lo0-in/master.svg)](https://ci.appveyor.com/project/fszlin/lo0-in)
