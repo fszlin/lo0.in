@@ -65,7 +65,7 @@ build_script:
   - ps: Add-AppveyorMessage -Message "certes az dns $orderLocation $domain --resource-group certes"
   - ps: certes az dns $orderLocation $domain --resource-group certes | Out-Null
   - ps: Add-AppveyorMessage -Message "certes az dns $orderLocation $domain2 --resource-group certes"
-  - ps: certes az dns $orderLocation $domain --resource-group certes | Out-Null
+  - ps: certes az dns $orderLocation $domain2 --resource-group certes | Out-Null
   # validate DNS response
   - ps: Add-AppveyorMessage -Message "certes order validate $orderLocation $domain dns"
   - ps: certes order validate $orderLocation $domain dns | Out-Null
