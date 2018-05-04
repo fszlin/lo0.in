@@ -55,8 +55,6 @@ nuget:
   disable_publish_on_pr: true
 
 build_script:
-  # check package Version
-  - ps: certes --help
   # create wildcard order
   - ps: $order = certes order new $($domain) | ConvertFrom-Json
   - ps: Add-AppveyorMessage -Message $order.location
