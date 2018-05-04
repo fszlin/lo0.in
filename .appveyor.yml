@@ -29,7 +29,7 @@ environment:
     secure: igTLkiccsMP8ctXsHH6ymG8CKv6dXbi0HUqjcqyjfAZcgJp5NtDWH/7Ch0FVw9gt
 
 cache:
-  - dotnet-pre
+#  - dotnet-pre
 
 install:
   - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
@@ -57,8 +57,9 @@ nuget:
 build_script:
   # create wildcard order
   - ps: Add-AppveyorMessage -Message "certes order new $domain"
-  - ps: $order = certes order new $domain | ConvertFrom-Json
-  - ps: Add-AppveyorMessage -Message $order.location
+  - ps: $orderResp = certes order new $domain | Out-String
+  - ps: Add-AppveyorMessage -Message $orderResp
+  - ps: $order = $orderResp | ConvertFrom-Json
   # deploy DNS response to Azure
   - ps: certes az dns $order.location $domain --resource-group certes | Out-Null
   # validate DNS response
