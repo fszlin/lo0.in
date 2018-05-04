@@ -35,15 +35,13 @@ install:
   - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
   - ps: .\dotnet-install.ps1 -InstallDir ./dotnet-pre -Version 2.1.300-preview2-008530 -NoPath
   - ps: >-
+        $domain1 = "*.lo0.in";
+        $domain2 = "*.ci-$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
         If ($env:APPVEYOR_SCHEDULED_BUILD -eq "True") {
-            $domain = "*.lo0.in";
-            $domain2 = "*.$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
             $pkgInfo = wget "https://api-v2v3search-1.nuget.org/query?q=dotnet-certes&prerelease=true" | ConvertFrom-Json
             $latestVer = $pkgInfo.data.versions | Select-Object -Last 1
             wget "https://www.nuget.org/api/v2/package/Certes/$($latestVer.version)" -outfile "dotnet-certes.$($latestVer.version).nupkg"
         } Else {
-            $domain = "*.lo0.in";
-            $domain2 = "*.ci-$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
             $pkgInfo = wget "https://www.myget.org/F/certes/api/v3/query?q=dotnet-certes&prerelease=true" | ConvertFrom-Json
             $latestVer = $pkgInfo.data.versions | where {$_.version -like "*-master-*"} | Select-Object -Last 1
             wget "https://www.myget.org/F/certes/api/v2/package/dotnet-certes/$($latestVer.version)" -outfile "dotnet-certes.$($latestVer.version).nupkg"
@@ -58,24 +56,24 @@ nuget:
 
 build_script:
   # create wildcard order
-  - ps: Add-AppveyorMessage -Message "certes order new $domain $domain2"
-  - ps: $order = certes order new $domain $domain2 | ConvertFrom-Json
+  - ps: Add-AppveyorMessage -Message "certes order new $domain1 $domain2"
+  - ps: $order = certes order new $domain1 $domain2 | ConvertFrom-Json
   - ps: $orderLocation = $order.location
   # deploy DNS response to Azure
-  - ps: Add-AppveyorMessage -Message "certes az dns $orderLocation $domain --resource-group certes"
-  - ps: certes az dns $orderLocation $domain --resource-group certes | Out-Null
+  - ps: Add-AppveyorMessage -Message "certes az dns $orderLocation $domain1 --resource-group certes"
+  - ps: certes az dns $orderLocation $domain1 --resource-group certes | Out-Null
   - ps: Add-AppveyorMessage -Message "certes az dns $orderLocation $domain2 --resource-group certes"
   - ps: certes az dns $orderLocation $domain2 --resource-group certes | Out-Null
   # validate DNS response
-  - ps: Add-AppveyorMessage -Message "certes order validate $orderLocation $domain dns"
-  - ps: certes order validate $orderLocation $domain dns | Out-Null
+  - ps: Add-AppveyorMessage -Message "certes order validate $orderLocation $domain1 dns"
+  - ps: certes order validate $orderLocation $domain1 dns | Out-Null
   - ps: Add-AppveyorMessage -Message "certes order validate $orderLocation $domain2 dns"
   - ps: certes order validate $orderLocation $domain2 dns | Out-Null
   # submit CSR
   - ps: Add-AppveyorMessage -Message "certes order finalize $orderLocation --dn `"CN=$($domain)`" --out ./key.pem"
   - ps: certes order finalize $orderLocation --dn "CN=$($domain)" --out ./key.pem | Out-Null
   # install SSL binding for Azure web app
-  - ps: certes az app $orderLocation www.lo0.in certes --slot ci --resource-group certes --private-key ./key.pem
+  - ps: certes az app $orderLocation www.lo0.in certes --slot ci --resource-group certes --private-key ./key.pem | Out-Null
   # export certificate
   - ps: Add-AppveyorMessage -Message "certes cert pem $orderLocation --out cert.pem"
   - ps: certes cert pem $orderLocation --out cert.pem | Out-Null
