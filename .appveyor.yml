@@ -41,7 +41,7 @@ install:
             $latestVer = $pkgInfo.data.versions | Select-Object -Last 1
             wget "https://www.nuget.org/api/v2/package/Certes/$($latestVer.version)" -outfile "dotnet-certes.$($latestVer.version).nupkg"
         } Else {
-            $domain = "*.$($env:APPVEYOR_BUILD_ID).lo0.in";
+            $domain = "*.$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
             $pkgInfo = wget "https://www.myget.org/F/certes/api/v3/query?q=dotnet-certes&prerelease=true" | ConvertFrom-Json
             $latestVer = $pkgInfo.data.versions | where {$_.version -like "*-master-*"} | Select-Object -Last 1
             wget "https://www.myget.org/F/certes/api/v2/package/dotnet-certes/$($latestVer.version)" -outfile "dotnet-certes.$($latestVer.version).nupkg"
