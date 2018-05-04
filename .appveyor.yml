@@ -16,7 +16,6 @@ clone_depth: 1
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 0
-  COMPlus_UseManagedHttpClientHandler: false
   CERTES_ACME_ACCOUNT_KEY:
     secure: fmkn8cbE+A1dHITS3s7NADqKi+2rYNKSSjuuLWvkX199WThoEptlCXKAwxlMhWZtBrXdNU5D+1RHI2ouDwWF7hwcIHcGf30v2UohFR+YHujT/N6c4EnK3261CNNm6AklbINPJ72+QPu04/NqEzDAtA==
   CERTES_AZURE_SUBSCRIPTION_ID:
@@ -29,12 +28,24 @@ environment:
     secure: igTLkiccsMP8ctXsHH6ymG8CKv6dXbi0HUqjcqyjfAZcgJp5NtDWH/7Ch0FVw9gt
 
 cache:
-  - dotnet-pre
 
 install:
   - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
   - ps: .\dotnet-install.ps1 -InstallDir ./dotnet-pre -Version 2.1.300-preview2-008530 -NoPath
-  - ps: ./dotnet-pre/dotnet.exe tool install dotnet-certes -g --version 1.0.1-preview-875
+  - ps: >-
+        $domain1 = "*.lo0.in";
+        $domain2 = "*.ci-$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
+        If ($env:APPVEYOR_SCHEDULED_BUILD -eq "True") {
+            $pkgInfo = wget "https://api-v2v3search-1.nuget.org/query?q=dotnet-certes&prerelease=true" | ConvertFrom-Json
+            $latestVer = $pkgInfo.data.versions | Select-Object -Last 1
+            wget "https://www.nuget.org/api/v2/package/Certes/$($latestVer.version)" -outfile "dotnet-certes.$($latestVer.version).nupkg"
+        } Else {
+            $pkgInfo = wget "https://www.myget.org/F/certes/api/v3/query?q=dotnet-certes&prerelease=true" | ConvertFrom-Json
+            $latestVer = $pkgInfo.data.versions | where {$_.version -like "*-master-*"} | Select-Object -Last 1
+            wget "https://www.myget.org/F/certes/api/v2/package/dotnet-certes/$($latestVer.version)" -outfile "dotnet-certes.$($latestVer.version).nupkg"
+        }
+  - ps: $latestVer = $pkgInfo.data.versions | where {$_.version -like "*-master-*"} | Select-Object -Last 1
+  - ps: ./dotnet-pre/dotnet.exe tool install dotnet-certes -g --configfile .\NuGet.config --version $($latestVer.version)
   - ps: $env:DOTNET_ROOT = "$($env:APPVEYOR_BUILD_FOLDER)\dotnet-pre"
   - ps: $env:Path += ";$($env:USERPROFILE)\.dotnet\tools\"
 
@@ -43,20 +54,30 @@ nuget:
 
 build_script:
   # create wildcard order
-  - ps: $order = certes order new *.lo0.in | ConvertFrom-Json
-  - ps: Add-AppveyorMessage -Message $order.location
+  - ps: Add-AppveyorMessage -Message "certes order new $domain1 $domain2"
+  - ps: $order = certes order new $domain1 $domain2 | ConvertFrom-Json
+  - ps: $orderLocation = $order.location
   # deploy DNS response to Azure
-  - ps: certes az dns $order.location *.lo0.in --resource-group certes | Out-Null
+  - ps: Add-AppveyorMessage -Message "certes az dns $orderLocation $domain1 --resource-group certes"
+  - ps: certes az dns $orderLocation $domain1 --resource-group certes | Out-Null
+  - ps: Add-AppveyorMessage -Message "certes az dns $orderLocation $domain2 --resource-group certes"
+  - ps: certes az dns $orderLocation $domain2 --resource-group certes | Out-Null
   # validate DNS response
-  - ps: certes order validate $order.location *.lo0.in dns | Out-Null
+  - ps: Add-AppveyorMessage -Message "certes order validate $orderLocation $domain1 dns"
+  - ps: certes order validate $orderLocation $domain1 dns | Out-Null
+  - ps: Add-AppveyorMessage -Message "certes order validate $orderLocation $domain2 dns"
+  - ps: certes order validate $orderLocation $domain2 dns | Out-Null
   # submit CSR
-  - ps: certes order finalize $order.location --dn "CN=*.lo0.in" --out ./key.pem | Out-Null
+  - ps: Add-AppveyorMessage -Message "certes order finalize $orderLocation --dn `"CN=$($domain)`" --out ./key.pem"
+  - ps: certes order finalize $orderLocation --dn "CN=$($domain)" --out ./key.pem | Out-Null
   # install SSL binding for Azure web app
-  - ps: $env:CERTES_DEBUG = "True"
-  - ps: certes az app $order.location www.lo0.in certes --slot ci --resource-group certes --private-key ./key.pem
+  - ps: Add-AppveyorMessage -Message "certes az app $orderLocation www.lo0.in certes --slot ci --resource-group certes --private-key ./key.pem"
+  - ps: certes az app $orderLocation www.lo0.in certes --slot ci --resource-group certes --private-key ./key.pem | Out-Null
   # export certificate
-  - ps: certes cert pem $order.location --out cert.pem | Out-Null
-  - ps: certes cert pfx $order.location certes --private-key ./key.pem --out cert.pfx | Out-Null
+  - ps: Add-AppveyorMessage -Message "certes cert pem $orderLocation --out cert.pem"
+  - ps: certes cert pem $orderLocation --out cert.pem | Out-Null
+  - ps: Add-AppveyorMessage -Message "certes cert pfx $orderLocation certes --private-key ./key.pem --out cert.pfx"
+  - ps: certes cert pfx $orderLocation certes --private-key ./key.pem --out cert.pfx | Out-Null
 
 test: off
 
