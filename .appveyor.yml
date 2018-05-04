@@ -56,12 +56,12 @@ nuget:
 
 build_script:
   # create wildcard order
-  - ps: $order = certes order new $($domain) | ConvertFrom-Json
+  - ps: $order = certes order new $domain | ConvertFrom-Json
   - ps: Add-AppveyorMessage -Message $order.location
   # deploy DNS response to Azure
-  - ps: certes az dns $order.location $($domain) --resource-group certes | Out-Null
+  - ps: certes az dns $order.location $domain --resource-group certes | Out-Null
   # validate DNS response
-  - ps: certes order validate $order.location $($domain) dns | Out-Null
+  - ps: certes order validate $order.location $domain dns | Out-Null
   # submit CSR
   - ps: certes order finalize $order.location --dn "CN=$($domain)" --out ./key.pem | Out-Null
   # install SSL binding for Azure web app
