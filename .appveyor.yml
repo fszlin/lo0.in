@@ -56,6 +56,7 @@ nuget:
 
 build_script:
   # create wildcard order
+  - ps: Add-AppveyorMessage -Message "certes order new $domain"
   - ps: $order = certes order new $domain | ConvertFrom-Json
   - ps: Add-AppveyorMessage -Message $order.location
   # deploy DNS response to Azure
