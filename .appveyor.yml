@@ -31,7 +31,7 @@ cache:
 
 install:
   - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
-  - ps: .\dotnet-install.ps1 -InstallDir ./dotnet-pre -Version 2.1.300-preview2-008530 -NoPath
+  - ps: .\dotnet-install.ps1 -InstallDir ./dotnet-pre -Version 2.1.300-rc1-008673 -NoPath
   - ps: >-
         $domain1 = "*.lo0.in";
         $domain2 = "*.ci-$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
