@@ -15,7 +15,7 @@ clone_depth: 1
 
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: 0
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
   CERTES_ACME_ACCOUNT_KEY:
     secure: fmkn8cbE+A1dHITS3s7NADqKi+2rYNKSSjuuLWvkX199WThoEptlCXKAwxlMhWZtBrXdNU5D+1RHI2ouDwWF7hwcIHcGf30v2UohFR+YHujT/N6c4EnK3261CNNm6AklbINPJ72+QPu04/NqEzDAtA==
   CERTES_AZURE_SUBSCRIPTION_ID:
@@ -31,7 +31,7 @@ cache:
 
 install:
   - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
-  - ps: .\dotnet-install.ps1 -InstallDir ./dotnet-pre -Version 2.1.300-rc1-008673 -NoPath
+  - ps: .\dotnet-install.ps1 -InstallDir ./dotnet2.1 -Version 2.1.300
   - ps: >-
         $domain1 = "*.lo0.in";
         $domain2 = "*.ci-$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
@@ -44,8 +44,9 @@ install:
             $latestVer = $pkgInfo.data.versions | Select-Object -Last 1
             wget "https://www.nuget.org/api/v2/package/dotnet-certes/$($latestVer.version)" -outfile "dotnet-certes.$($latestVer.version).nupkg"
         }
-  - ps: ./dotnet-pre/dotnet.exe tool install dotnet-certes -g --configfile .\NuGet.config --version $($latestVer.version)
-  - ps: $env:DOTNET_ROOT = "$($env:APPVEYOR_BUILD_FOLDER)\dotnet-pre"
+  - ps: $latestVer = $pkgInfo.data.versions | where {$_.version -like "*-master-*"} | Select-Object -Last 1
+  - ps: $env:DOTNET_ROOT = "$($env:APPVEYOR_BUILD_FOLDER)\dotnet2.1"
+  - ps: ./dotnet2.1/dotnet.exe tool install dotnet-certes -g --configfile .\NuGet.config --version $($latestVer.version)
   - ps: $env:Path += ";$($env:USERPROFILE)\.dotnet\tools\"
 
 nuget:
