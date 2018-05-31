@@ -44,7 +44,6 @@ install:
             $latestVer = $pkgInfo.data.versions | Select-Object -Last 1
             wget "https://www.nuget.org/api/v2/package/dotnet-certes/$($latestVer.version)" -outfile "dotnet-certes.$($latestVer.version).nupkg"
         }
-  - ps: $latestVer = $pkgInfo.data.versions | where {$_.version -like "*-master-*"} | Select-Object -Last 1
   - ps: $env:DOTNET_ROOT = "$($env:APPVEYOR_BUILD_FOLDER)\dotnet2.1"
   - ps: ./dotnet2.1/dotnet.exe tool install dotnet-certes -g --configfile .\NuGet.config --version $($latestVer.version)
   - ps: $env:Path += ";$($env:USERPROFILE)\.dotnet\tools\"
