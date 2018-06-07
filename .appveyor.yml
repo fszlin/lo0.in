@@ -19,19 +19,17 @@ environment:
   CERTES_ACME_ACCOUNT_KEY:
     secure: fmkn8cbE+A1dHITS3s7NADqKi+2rYNKSSjuuLWvkX199WThoEptlCXKAwxlMhWZtBrXdNU5D+1RHI2ouDwWF7hwcIHcGf30v2UohFR+YHujT/N6c4EnK3261CNNm6AklbINPJ72+QPu04/NqEzDAtA==
   CERTES_AZURE_SUBSCRIPTION_ID:
-    secure: FSK01SfyZI0x6AX2XVDxcE6kUAmg4fYja2hsNcQNBxa1PBddSZtZ8rthvO5c8o/R
+    secure: u2ucwWE9SyLLf4RRaNioPpgoqHf9vIwY+kgtbTmf8vKXIKZIPaLOFDC8gH7rZd06
   CERTES_AZURE_TENANT_ID:
     secure: 4FrR9+ARA8H+bLFFQDT4C1TAZv/LTO69vFpfjpqR5BVTedqgsZcey6xuS2TDA46l
   CERTES_AZURE_CLIENT_ID:
-    secure: icfPnryDWgqU1TmP3J7gsidrpY9jGAuWY4gXf6CeDkVOELNN25JaeMvaRztUqtlb
+    secure: dp7MAPn/z/amC3/+IpVOdDtXESia2b/kgMj4DlzgmJfiWVewj1VFHQjBr6KO2cTZ
   CERTES_AZURE_CLIENT_SECRET:
-    secure: igTLkiccsMP8ctXsHH6ymG8CKv6dXbi0HUqjcqyjfAZcgJp5NtDWH/7Ch0FVw9gt
+    secure: vauTaR2HBmDtUeuWbKncWqJlbkqjE0kdvxOvl0VfbMBnZIBA+bhgQvgdErBFZ8/H
 
 cache:
 
 install:
-  - ps: wget https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
-  - ps: .\dotnet-install.ps1 -InstallDir ./dotnet2.1 -Version 2.1.300
   - ps: >-
         $domain1 = "*.lo0.in";
         $domain2 = "*.ci-$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
@@ -44,8 +42,7 @@ install:
             $latestVer = $pkgInfo.data.versions | Select-Object -Last 1
             wget "https://www.nuget.org/api/v2/package/dotnet-certes/$($latestVer.version)" -outfile "dotnet-certes.$($latestVer.version).nupkg"
         }
-  - ps: $env:DOTNET_ROOT = "$($env:APPVEYOR_BUILD_FOLDER)\dotnet2.1"
-  - ps: ./dotnet2.1/dotnet.exe tool install dotnet-certes -g --configfile .\NuGet.config --version $($latestVer.version)
+  - ps: dotnet tool install dotnet-certes -g --configfile .\NuGet.config --version $($latestVer.version)
   - ps: $env:Path += ";$($env:USERPROFILE)\.dotnet\tools\"
 
 nuget:
@@ -71,7 +68,7 @@ build_script:
   - ps: certes order finalize $orderLocation --dn "CN=$($domain)" --out ./key.pem | Out-Null
   # install SSL binding for Azure web app
   - ps: Add-AppveyorMessage -Message "certes az app $orderLocation www.lo0.in certes --slot ci --resource-group certes --private-key ./key.pem"
-  - ps: certes az app $orderLocation www.lo0.in dymetis --resource-group realtorise --private-key ./key.pem | Out-Null
+  - ps: certes az app $orderLocation www.lo0.in certes-qa --resource-group certes --private-key ./key.pem | Out-Null
   # export certificate
   - ps: Add-AppveyorMessage -Message "certes cert pem $orderLocation --out cert.pem"
   - ps: certes cert pem $orderLocation --out cert.pem | Out-Null
