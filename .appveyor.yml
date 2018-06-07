@@ -76,7 +76,7 @@ build_script:
   - ps: Add-AppveyorMessage -Message "certes cert pem $orderLocation --out cert.pem"
   - ps: certes cert pem $orderLocation --out cert.pem | Out-Null
   - ps: Add-AppveyorMessage -Message "certes cert pfx $orderLocation certes --private-key ./key.pem --out cert.pfx"
-  - ps: certes cert pfx $orderLocation certes --private-key ./key.pem --out cert.pfx | Out-Null
+  - ps: certes cert pfx $orderLocation certes --private-key ./key.pem --out cert.pfx
 
 test: off
 
