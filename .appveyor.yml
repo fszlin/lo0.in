@@ -19,13 +19,13 @@ environment:
   CERTES_ACME_ACCOUNT_KEY:
     secure: fmkn8cbE+A1dHITS3s7NADqKi+2rYNKSSjuuLWvkX199WThoEptlCXKAwxlMhWZtBrXdNU5D+1RHI2ouDwWF7hwcIHcGf30v2UohFR+YHujT/N6c4EnK3261CNNm6AklbINPJ72+QPu04/NqEzDAtA==
   CERTES_AZURE_SUBSCRIPTION_ID:
-    secure: FSK01SfyZI0x6AX2XVDxcE6kUAmg4fYja2hsNcQNBxa1PBddSZtZ8rthvO5c8o/R
+    secure: u2ucwWE9SyLLf4RRaNioPpgoqHf9vIwY+kgtbTmf8vKXIKZIPaLOFDC8gH7rZd06
   CERTES_AZURE_TENANT_ID:
     secure: 4FrR9+ARA8H+bLFFQDT4C1TAZv/LTO69vFpfjpqR5BVTedqgsZcey6xuS2TDA46l
   CERTES_AZURE_CLIENT_ID:
-    secure: icfPnryDWgqU1TmP3J7gsidrpY9jGAuWY4gXf6CeDkVOELNN25JaeMvaRztUqtlb
+    secure: dp7MAPn/z/amC3/+IpVOdDtXESia2b/kgMj4DlzgmJfiWVewj1VFHQjBr6KO2cTZ
   CERTES_AZURE_CLIENT_SECRET:
-    secure: igTLkiccsMP8ctXsHH6ymG8CKv6dXbi0HUqjcqyjfAZcgJp5NtDWH/7Ch0FVw9gt
+    secure: vauTaR2HBmDtUeuWbKncWqJlbkqjE0kdvxOvl0VfbMBnZIBA+bhgQvgdErBFZ8/H
 
 cache:
 
