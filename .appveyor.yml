@@ -71,7 +71,7 @@ build_script:
   - ps: certes az app $orderLocation www.lo0.in certes-qa --resource-group certes --private-key ./key.pem | Out-Null
   # export certificate
   - ps: Add-AppveyorMessage -Message "certes cert pem $orderLocation --out cert.pem"
-  - ps: certes cert pem $orderLocation --out cert.pem | Out-Null | Out-Null
+  - ps: certes cert pem $orderLocation --out cert.pem | Out-Null
   - ps: Add-AppveyorMessage -Message "certes cert pfx $orderLocation certes --private-key ./key.pem --out cert.pfx"
   - ps: certes cert pfx $orderLocation certes --private-key ./key.pem --out cert.pfx | Out-Null
 
