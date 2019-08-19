@@ -25,7 +25,7 @@ environment:
   CERTES_AZURE_CLIENT_ID:
     secure: dp7MAPn/z/amC3/+IpVOdDtXESia2b/kgMj4DlzgmJfiWVewj1VFHQjBr6KO2cTZ
   CERTES_AZURE_CLIENT_SECRET:
-    secure: vauTaR2HBmDtUeuWbKncWqJlbkqjE0kdvxOvl0VfbMBnZIBA+bhgQvgdErBFZ8/H
+    secure: gLx/LNylDtCyrnwtdDj7aLdeLlVI8U5q8nxu4cX+i0RH5I53t8eEKCcEZKoaj9W5
 
 cache:
 
