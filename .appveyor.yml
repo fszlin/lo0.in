@@ -33,7 +33,7 @@ install:
   - ps: >-
         $domain1 = "*.lo0.in";
         $domain2 = "*.ci-$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
-  - ps: dotnet tool install dotnet-certes -g
+  - ps: dotnet tool install dotnet-certes -g --version 1.0.3
   - ps: $env:Path += ";$($env:USERPROFILE)\.dotnet\tools\"
 
 nuget:
