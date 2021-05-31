@@ -80,7 +80,7 @@ deploy:
     release: v$(APPVEYOR_BUILD_VERSION)
     description: 'PFX password: certes'
     auth_token:
-      secure: B+lTI7i/tnZeg1ZSmho3HvOWjs0C4hptNy5cvWgF0Nn7b6v8nwT/mxEWVCfIJ7Fy
+      secure: h8W1UnvbXvIldJLmdlHeaXln2IOPfGCYF9eFx12tPBS4x+9F0yBX3y8kJSxIncun
     artifact: pfx,pem
     draft: false
     prerelease: false
