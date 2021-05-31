@@ -33,7 +33,7 @@ install:
   - ps: >-
         $domain1 = "*.lo0.in";
         $domain2 = "*.ci-$($env:APPVEYOR_BUILD_NUMBER).lo0.in";
-  - ps: dotnet tool restore
+  - ps:  dotnet tool install dotnet-certes --version *-*  --add-source https://www.myget.org/F/certes/api/v3/index.json
 
 nuget:
   disable_publish_on_pr: true
